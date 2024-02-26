@@ -1,3 +1,18 @@
+const { createServer } = require('http');
+
+const express = require('express');
+const { Server } = require('socket.io');
+const app = express();
+const httpServer = createServer(app);
+// Enable cross origin resource sharing
+const io = new Server(httpServer, {
+    cors: {
+        origin: '*'
+    }
+});
+
+
+
 // const { WebcastPushConnection } = require('tiktok-live-connector');
 const { WebcastPushConnection, signatureProvider } = require('tiktok-live-connector');
 signatureProvider.config.extraParams.apiKey = "Y2NkYWY0NjRmNmJmZTRjYzFkNDhhZDNlOTkzMGU0ZDNlMjA4ZmE5MDMzM2FiYzczMmZkMzZl";
@@ -27,3 +42,10 @@ tiktokLiveConnection.on('gift', data => {
 })
 
 // ...and more events described in the documentation below
+
+
+
+// Start http listener
+const port = process.env.PORT || 8081;
+httpServer.listen(port);
+console.info(`Server running! Please visit http://localhost:${port}`);
